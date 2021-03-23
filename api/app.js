@@ -13,21 +13,6 @@ const pgp = require("pg-promise")({});
 // This is the path to DB 
 var db = pgp("postgres://localhost:5432/eventonica");
 // view engine setup
-
-app.get("/events", async (req, res) => {
-  try { const events = await db.any("SELECT * FROM events;", [true]); console.log({ events }); res.json(events); } catch (e) { console.log(e); }
-});
-app.post("/events", async (req, res) => {
-  const _events = req.body
-  const _eventsSchema = {
-    eventName: _events.title,
-    eventDate: _events.date,
-    location: _events.location,
-    category:_events.category
-  }
-  const result = await db.any("INSERT into events (eventname,eventdate,category,location)VALUES('"+_eventsSchema.eventName+"','"+_eventsSchema.eventDate+"','"+_eventsSchema.category+"','"+_eventsSchema.location+"')",[true])
-  res.status(200).send({msg:'successful'})
-})
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -42,9 +27,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -58,6 +41,25 @@ app.use(function(err, req, res, next) {
 });
 
 
+app.get("/events", async (req, res) => {
+  try { const events = await db.any("SELECT * FROM events;", [true]); console.log({ events }); res.json(events); } catch (e) { console.log(e); }
+});
+app.post("/events", async (req, res) => {
+  const _events = req.body;
+  const _eventsSchema = {
+    eventName: _events.title,
+    eventDate: _events.date,
+    location: _events.location,
+    category:_events.category
+  };
+  const result = await db.any("INSERT into events (eventname,eventdate,category,location)VALUES("+_eventsSchema.eventName+","+_eventsSchema.eventDate+","+_eventsSchema.category+","+_eventsSchema.location+")",[true])
+  res.status(200).send({msg:'successful'})
+})
+
+
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 app.listen(9000);
 
 

@@ -15,7 +15,7 @@ const Events = () => {
     console.log({ title, date, location, category });
     //
     let _events={ title, date, location, category }
-    // setEvents([...events, { title, date, location, category }])
+    // setEvents([...events, { title, date, location, category }]) modified
     
     let result =await fetch('http://localhost:9000/events', {
       method: 'post',
