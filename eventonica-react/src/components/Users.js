@@ -11,7 +11,7 @@ const Users = () => {
     console.log({ username, firstname, lastname, email });
 }
   useEffect(async () => {
-    let result = await fetch('/events')
+    let result = await fetch('http://localhost:9000/events')
     let res =await result.json()
     console.log(res)
   },[])
