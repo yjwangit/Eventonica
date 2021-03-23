@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Events from './components/Events';
 import Users from './components/Users';
-import logo from './logo.svg';
 import './App.css';
 
 function App () {
-  const [apiResponse, setAPIResponse] = React.useState("");
+  const [setAPIResponse] = React.useState("");
   function callAPI() {
       fetch("http://localhost:9000/testAPI")
           .then(res => res.text())

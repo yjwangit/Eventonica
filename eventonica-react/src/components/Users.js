@@ -10,11 +10,15 @@ const Users = () => {
     e.preventDefault();
     console.log({ username, firstname, lastname, email });
 }
-  useEffect(async () => {
-    let result = await fetch('http://localhost:9000/events')
-    let res =await result.json()
-    console.log(res)
-  },[])
+  useEffect(() => {
+    async function fetchData() {
+      let result = await fetch('http://localhost:9000/events')
+      let res = await result.json()
+      console.log(res)
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <h2>Sign up</h2>
