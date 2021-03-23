@@ -45,15 +45,21 @@ app.get("/events", async (req, res) => {
   try { const events = await db.any("SELECT * FROM events;", [true]); console.log({ events }); res.json(events); } catch (e) { console.log(e); }
 });
 app.post("/events", async (req, res) => {
-  const _events = req.body;
-  const _eventsSchema = {
-    eventName: _events.title,
-    eventDate: _events.date,
-    location: _events.location,
-    category:_events.category
-  };
-  const result = await db.any("INSERT into events (eventname,eventdate,category,location)VALUES("+_eventsSchema.eventName+","+_eventsSchema.eventDate+","+_eventsSchema.category+","+_eventsSchema.location+")",[true])
-  res.status(200).send({msg:'successful'})
+  try {
+    const _events = req.body;
+    const _eventsSchema = {
+      eventName: _events.title,
+      eventDate: _events.date,
+      location: _events.location,
+      category:_events.category
+    };
+    const result = await db.any("INSERT into events (eventname,eventdate,category,location)VALUES('"+_eventsSchema.eventName+"','"+_eventsSchema.eventDate+"','"+_eventsSchema.category+"','"+_eventsSchema.location+"')",[true])
+    res.status(200).send({msg:'successful'})
+  } catch (error) {
+    console.error({error});
+    res.status(500);
+    res.send({msg: {error}})
+  }
 })
 
 
